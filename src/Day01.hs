@@ -2,29 +2,25 @@ module Day01 where
     import Data.List.Split
 
     processInput :: String -> [Int]
-    processInput input =
-        map read $ splitOn "\n" input
+    processInput = map read . splitOn "\n" 
 
-    fuelFunc :: Int -> Int
-    fuelFunc m = (div m 3) - 2
+    part1 :: Int -> Int
+    part1 m = (div m 3) - 2
 
-    allFuelFunc :: Int -> Int
-    allFuelFunc m
+    part2 :: Int -> Int
+    part2 m
         | fuel <= 0 = 0
-        | otherwise = fuel + allFuelFunc fuel
+        | otherwise = fuel + part2 fuel
       where
-        fuel = fuelFunc m
+        fuel = part1 m
 
-    part01 :: String -> IO ()
-    part01 input = 
-        putStrLn $ show $ sum $ map fuelFunc $ processInput input
-
-    part02 :: String -> IO ()
-    part02 input =
-        putStrLn $ show $ sum $ map allFuelFunc $ processInput input
+    solve :: (Int -> Int) -> [Int] -> IO ()
+    solve f x= putStrLn . show . sum $ map f x 
     
     day01 input = do
         putStr "Part 1: "
-        part01 input
+        solve part1 proc
         putStr "Part 2: "
-        part02 input
+        solve part2 proc
+      where
+        proc = processInput input
