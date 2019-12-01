@@ -24,5 +24,7 @@ module Day01 where
         putStrLn $ show $ sum $ map allFuelFunc $ processInput input
     
     day01 input = do
+        putStr "Part 1: "
         part01 input
+        putStr "Part 2: "
         part02 input
