@@ -1,5 +1,5 @@
 module Day02 where
-    import Data.List.Split
+    import           Data.List.Split
     import qualified Data.Map as M
     import           Data.Map (Map)
 
@@ -21,10 +21,9 @@ module Day02 where
     nvPairs :: Int -> Int -> [(Int,Int)]
     nvPairs n v = [(xn,xv) | xn <- [0..n], xv <- [0..v]]
     
-
     day02 input = do
         let proc = processInput input
         putStr "Part 1: "
-        putStrLn . show $ part1 $ loadMemoryWithNV 12 2 proc
+        putStrLn . show . part1 $ loadMemoryWithNV 12 2 proc
         putStr "Part 2: "
-        putStrLn. show $ part2 (loadMemory proc) (nvPairs 100 100)
+        putStrLn . show $ part2 (loadMemory proc) (nvPairs 99 99)
