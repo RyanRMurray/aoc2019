@@ -15,7 +15,7 @@ module Day01 where
         fuel = part1 m
 
     solve :: (Int -> Int) -> [Int] -> IO ()
-    solve f x= putStrLn . show . sum $ map f x 
+    solve f x = putStrLn . show . sum $ map f x 
     
     day01 input = do
         putStr "Part 1: "

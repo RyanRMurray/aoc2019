@@ -5,9 +5,10 @@ module Main where
     import Data.List
 
     import Day01
+    import Day02
 
     solutions :: [(String -> IO ())]
-    solutions = [day01]
+    solutions = [day01,day02]
 
     findSolution :: Int -> Maybe (String -> IO ())
     findSolution i
