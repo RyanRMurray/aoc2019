@@ -49,7 +49,6 @@ module Day03 where
 -- part 1 : find distance between origin and nearest intersection of two wires
 ---------------------------------------------------------------------------------------------------
 
-
     spaceOfWire :: Wire -> WireSpace
     spaceOfWire ws = fst $ foldl insertSegment (S.singleton (0,0), (0,0)) ws
 
