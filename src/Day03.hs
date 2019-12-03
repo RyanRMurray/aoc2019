@@ -1,12 +1,17 @@
 module Day03 where
     import           Data.List.Split
+    import           Data.Sort
+
     import qualified Data.Map as M
     import           Data.Map (Map)
+    import qualified Data.Set as S
+    import           Data.Set (Set)
 
     type CoOrd = (Int,Int)
     type Wire = [(Char, Int)]
     type WireSteps = [Char]
     type WireGrid = Map CoOrd Int
+    type WireSpace = Set CoOrd
     data Stepper = Stepper
       { directions :: WireSteps
       , location   :: CoOrd
@@ -44,22 +49,19 @@ module Day03 where
 -- part 1 : find distance between origin and nearest intersection of two wires
 ---------------------------------------------------------------------------------------------------
 
-    insertWires :: [Wire] -> WireGrid
-    insertWires ws = M.unionsWith (+) $ map insertWire ws
 
-    insertWire :: Wire -> WireGrid
-    insertWire ws = M.unions . fst $ foldl insertSegment ([M.singleton (0,0) 1],(0,0)) ws
+    spaceOfWire :: Wire -> WireSpace
+    spaceOfWire ws = fst $ foldl insertSegment (S.singleton (0,0), (0,0)) ws
 
     --a segment is a straight piece of wire, its direction and length given by a char and int pair
-    insertSegment :: ([WireGrid], CoOrd) -> (Char, Int) -> ([WireGrid], CoOrd)
+    insertSegment :: (WireSpace, CoOrd) -> (Char, Int) -> (WireSpace, CoOrd)
     insertSegment (w,loc) (d,steps) = 
-        (M.fromList [(s,1) | s <- visited] : w, nextLoc)
+        (S.union w $ S.fromList visited , last visited)
       where
         visited = scanl next loc (replicate steps d)
-        nextLoc = foldl next loc (replicate steps d)
 
     part1 :: [Wire] -> Int
-    part1 input = minimum . (map manDis) . tail . M.keys . (M.filter (>1)) $ insertWires input
+    part1 (w1:w2:_) = S.findMin . S.deleteMin . (S.map manDis) $ S.intersection (spaceOfWire w1) (spaceOfWire w2)
 
 -- part 2 : find shortest collective distance between two intersections
 ---------------------------------------------------------------------------------------------------
