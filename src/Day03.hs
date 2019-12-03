@@ -26,6 +26,9 @@ module Day03 where
     next (x,y)  'D' = (x,y-1)
     next (x,y)  'R' = (x+1,y)
     next (x,y)  'L' = (x-1,y)
+    
+    manDis :: CoOrd -> Int
+    manDis (x,y) = abs x + abs y
 
     processInput :: String -> [Wire]
     processInput = 
@@ -37,6 +40,9 @@ module Day03 where
 
     processSteps :: Wire -> WireSteps
     processSteps w = concat [replicate s d | (d,s) <- w]
+
+-- part 1 : find distance between origin and nearest intersection of two wires
+---------------------------------------------------------------------------------------------------
 
     insertWires :: [Wire] -> WireGrid
     insertWires ws = M.unionsWith (+) $ map insertWire ws
@@ -52,8 +58,11 @@ module Day03 where
         visited = scanl next loc (replicate steps d)
         nextLoc = foldl next loc (replicate steps d)
 
-    
-    manDis (x,y) = abs x + abs y
+    part1 :: [Wire] -> Int
+    part1 input = minimum . (map manDis) . tail . M.keys . (M.filter (>1)) $ insertWires input
+
+-- part 2 : find shortest collective distance between two intersections
+---------------------------------------------------------------------------------------------------
 
     --step each stepper until one runs out of directions, record instances of one crossing another's path
     findPeriods :: Stepper ->  Stepper -> [Int] -> [Int]
@@ -67,13 +76,12 @@ module Day03 where
       where
         f = findPeriods (step stepper1) (step stepper2)
 
-    part1 :: [Wire] -> Int
-    part1 input = minimum . (map manDis) . tail . M.keys . (M.filter (>1)) $ insertWires input
-
     part2 :: [Wire] -> Int
     part2 input = minimum $ findPeriods (newStepper w1) (newStepper w2) []
       where
         (w1:w2:_) = map processSteps input
+
+---------------------------------------------------------------------------------------------------
 
     day03 input = do
         let proc = processInput input
