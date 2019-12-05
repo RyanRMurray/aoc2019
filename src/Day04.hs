@@ -38,7 +38,3 @@ module Day04 where
         print $ part1 proc
         putStr "Part 2: "
         print $ part2 proc
-
-
-
-    

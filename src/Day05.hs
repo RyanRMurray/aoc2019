@@ -17,6 +17,3 @@ module Day05 where
         print $ diagnose proc 1
         putStr "Part 2: "
         print $ diagnose proc 5
-
-
-

@@ -13,11 +13,11 @@ module Day03 where
     type WireGrid = Map CoOrd Int
     type WireSpace = Set CoOrd
     data Stepper = Stepper
-		{ directions :: WireSteps
-		, location   :: CoOrd
-		, distance   :: Int
-		, path       :: WireGrid
-		}
+        { directions :: WireSteps
+        , location   :: CoOrd
+        , distance   :: Int
+        , path       :: WireGrid
+        }
 
     newStepper :: WireSteps -> Stepper
     newStepper w = Stepper w (0,0) 0 M.empty
@@ -71,11 +71,11 @@ module Day03 where
     findPeriods _ (Stepper [] _ _ _) pds = pds
 
     findPeriods stepper1@(Stepper _ loc1 s1 m1) stepper2@(Stepper _ loc2 s2 m2) pds
-		| M.member loc1 m2 = f (s1 + m2 M.! loc1 :pds)
-		| M.member loc2 m1 = f (s2 + m1 M.! loc2 :pds)
-		| otherwise        = f pds
-	  where
-		f = findPeriods (step stepper1) (step stepper2)
+        | M.member loc1 m2 = f (s1 + m2 M.! loc1 :pds)
+        | M.member loc2 m1 = f (s2 + m1 M.! loc2 :pds)
+        | otherwise        = f pds
+      where
+        f = findPeriods (step stepper1) (step stepper2)
 
     part2 :: [Wire] -> Int
     part2 input = minimum $ findPeriods (newStepper w1) (newStepper w2) []
@@ -90,4 +90,3 @@ module Day03 where
         putStrLn . show $ part1 proc
         putStr "Part 2: "
         putStrLn . show $ part2 proc
-        
