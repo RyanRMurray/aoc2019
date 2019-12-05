@@ -19,17 +19,19 @@ module IntCode where
     outputMachine (IntMachine m i o p) no = IntMachine 
         m i 
         (o ++ [no])
-        p
+        (p + 3)
 
     inputMachine :: IntMachine -> Int -> IntMachine
     inputMachine (IntMachine m (i:is) o p) loc = IntMachine 
         (M.insert loc i m) 
-        is o p
+        is o 
+        (p + 2)
 
     setMem :: IntMachine -> Int -> Int -> IntMachine
     setMem (IntMachine m i o p) loc nv = IntMachine 
       (M.insert loc nv m)
-      i o p
+      i o
+      (p + 4)
 
     loadMemoryWithNV ::  Int -> Int -> [Int] -> Memory
     loadMemoryWithNV n v  = (M.insert 2 v) . (M.insert 1 n) . loadMemory        
@@ -77,11 +79,10 @@ module IntCode where
     execInstr machine [5,a,b]   = if a /= 0 then setPtr machine b else machine
     execInstr machine [6,a,b]   = if a == 0 then setPtr machine b else machine
 
-    execIntCode :: IntMachine -> IntMachine
-    execIntCode m1@(IntMachine mem _ _ ptr)
+    runIntMachine :: IntMachine -> IntMachine
+    runIntMachine m1@(IntMachine mem _ _ ptr)
         | mem M.! ptr == 99  = m1
-        | np          == ptr = execIntCode $ setPtr m2 (ptr + length instr)
-        | otherwise          = execIntCode m2
+        | otherwise          = runIntMachine m2
       where 
         instr = loadInstr ptr mem
-        m2@(IntMachine _ _ _ np) = execInstr m1 instr
+        m2 = execInstr m1 instr

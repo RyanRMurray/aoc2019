@@ -9,7 +9,7 @@ module Day02 where
     processInput = (map read) .  splitOn ","
 
     part1 :: Memory -> Int
-    part1 mem = (M.!) (memory $ execIntCode (IntMachine mem [] [] 0)) 0
+    part1 mem = (M.!) (memory $ runIntMachine (IntMachine mem [] [] 0)) 0
 
     part2 :: Memory -> [(Int,Int)] -> Int
     part2 mem ((n,v):nvs)
