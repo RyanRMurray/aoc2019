@@ -9,7 +9,7 @@ module Day05 where
     processInput = (map read) .  splitOn ","
 
     diagnose :: Memory -> Int -> [Int]
-    diagnose mem i = output $ runIntMachine (IntMachine mem [i] [] 0)
+    diagnose mem i = output $ execIntCode (IntMachine mem [i] [] 0)
 
     day05 input = do
         let proc = loadMemory $ processInput input

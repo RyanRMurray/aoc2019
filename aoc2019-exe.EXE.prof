@@ -1,39 +1,36 @@
-	Thu Dec 05 11:43 2019 Time and Allocation Profiling Report  (Final)
+	Thu Dec 05 11:36 2019 Time and Allocation Profiling Report  (Final)
 
 	   aoc2019-exe.EXE +RTS -N -N -p -RTS 2 input.txt
 
-	total time  =        0.07 secs   (276 ticks @ 1000 us, 4 processors)
-	total alloc = 465,229,360 bytes  (excludes profiling overheads)
+	total time  =        0.07 secs   (280 ticks @ 1000 us, 4 processors)
+	total alloc = 465,231,824 bytes  (excludes profiling overheads)
 
 COST CENTRE         MODULE      SRC                                %time %alloc
 
-execIntCode         IntCode     src\IntCode.hs:(81,5)-(87,53)       14.1    3.2
-loadInts.val        IntCode     src\IntCode.hs:64:53-74             13.8    0.0
-loadInstr.vals      IntCode     src\IntCode.hs:47:9-51              11.2   19.0
-setMem              IntCode     src\IntCode.hs:(30,5)-(32,11)        8.0   12.6
-padInstr            IntCode     src\IntCode.hs:(51,5)-(61,65)        7.6   10.2
-loadInstr           IntCode     src\IntCode.hs:(41,5)-(47,51)        6.5   10.6
-loadVals            IntCode     src\IntCode.hs:(67,5)-(68,34)        5.4    0.0
-loadInstr.instr     IntCode     src\IntCode.hs:44:9-48               5.4    1.4
-loadInts            IntCode     src\IntCode.hs:64:5-75               4.7   19.9
-execInstr           IntCode     src\IntCode.hs:(71,5)-(78,78)        4.7    7.8
-mDigitsRev.dr       Data.Digits src\Data\Digits.hs:(18,7)-(22,45)    2.9    6.5
-loadInstr.mems      IntCode     src\IntCode.hs:46:9-46               2.2    0.0
-mDigitsRev.dr.(...) Data.Digits src\Data\Digits.hs:21:26-56          1.8    3.2
-digits              Data.Digits src\Data\Digits.hs:46:1-38           1.8    1.4
-part1               Day02       src\Day02.hs:12:5-71                 1.4    0.0
-loadInstr.op        IntCode     src\IntCode.hs:45:9-37               1.4    0.0
-execIntCode.(...)   IntCode     src\IntCode.hs:87:9-53               1.4    0.0
-mDigitsRev          Data.Digits src\Data\Digits.hs:(14,1)-(22,45)    1.4    0.0
+loadInts.val        IntCode     src\IntCode.hs:64:53-74             15.0    0.0
+loadInstr.instr     IntCode     src\IntCode.hs:44:9-48              10.7    1.4
+execIntCode         IntCode     src\IntCode.hs:(81,5)-(87,53)        9.6    3.2
+loadInstr.vals      IntCode     src\IntCode.hs:47:9-51               9.3   19.0
+loadVals            IntCode     src\IntCode.hs:(67,5)-(68,34)        8.9    0.0
+setMem              IntCode     src\IntCode.hs:(30,5)-(32,11)        8.2   12.6
+loadInstr           IntCode     src\IntCode.hs:(41,5)-(47,51)        6.8   10.6
+padInstr            IntCode     src\IntCode.hs:(51,5)-(61,65)        5.0   10.2
+loadInts            IntCode     src\IntCode.hs:64:5-75               5.0   19.9
+execInstr           IntCode     src\IntCode.hs:(71,5)-(78,70)        3.2    7.8
+mDigitsRev.dr       Data.Digits src\Data\Digits.hs:(18,7)-(22,45)    3.2    6.5
+mDigitsRev.dr.(...) Data.Digits src\Data\Digits.hs:21:26-56          2.5    3.2
+main                Main        app\Main.hs:(24,5)-(29,32)           2.1    0.0
+loadInstr.mems      IntCode     src\IntCode.hs:46:9-46               1.8    0.0
+execIntCode.instr   IntCode     src\IntCode.hs:86:9-33               1.8    1.4
 part2.res           Day02       src\Day02.hs:19:9-55                 1.1    1.1
-loadInstr.(...)     IntCode     src\IntCode.hs:45:9-37               0.7    1.4
-execIntCode.instr   IntCode     src\IntCode.hs:86:9-33               0.7    1.4
+loadInstr.(...)     IntCode     src\IntCode.hs:45:9-37               1.1    1.4
+digits              Data.Digits src\Data\Digits.hs:46:1-38           0.7    1.4
 
 
                                                                                                                                         individual      inherited
 COST CENTRE                             MODULE                    SRC                                               no.      entries  %time %alloc   %time %alloc
 
-MAIN                                    MAIN                      <built-in>                                         809          0    0.4    0.0   100.0  100.0
+MAIN                                    MAIN                      <built-in>                                         809          0    0.7    0.0   100.0  100.0
  CAF                                    GHC.Conc.Windows          <entire-module>                                   1592          0    0.0    0.0     0.0    0.0
  CAF                                    Text.Read.Lex             <entire-module>                                   1589          0    0.0    0.0     0.0    0.0
  CAF                                    System.Posix.Internals    <entire-module>                                   1583          0    0.0    0.0     0.0    0.0
@@ -42,7 +39,7 @@ MAIN                                    MAIN                      <built-in>    
  CAF                                    GHC.IO.Handle.FD          <entire-module>                                   1549          0    0.0    0.0     0.0    0.0
  CAF                                    GHC.IO.FD                 <entire-module>                                   1547          0    0.0    0.0     0.0    0.0
  CAF                                    GHC.IO.Exception          <entire-module>                                   1546          0    0.0    0.0     0.0    0.0
- CAF                                    GHC.IO.Encoding.CodePage  <entire-module>                                   1539          0    0.4    0.0     0.4    0.0
+ CAF                                    GHC.IO.Encoding.CodePage  <entire-module>                                   1539          0    0.0    0.0     0.0    0.0
  CAF                                    GHC.IO.Encoding           <entire-module>                                   1538          0    0.0    0.0     0.0    0.0
  CAF:day2                               Day02                     <no location info>                                 878          0    0.0    0.0     0.0    0.2
   day02                                 Day02                     src\Day02.hs:(24,5)-(29,65)                       1705          0    0.0    0.0     0.0    0.2
@@ -85,42 +82,42 @@ MAIN                                    MAIN                      <built-in>    
       initBlankPolicy                   Data.List.Split.Internals src\Data\List\Split\Internals.hs:35:30-44         1664          1    0.0    0.0     0.0    0.0
  CAF:solutions                          Main                      app\Main.hs:15:5-13                                822          0    0.0    0.0     0.0    0.0
   solutions                             Main                      app\Main.hs:15:5-47                               1622          1    0.0    0.0     0.0    0.0
- main                                   Main                      app\Main.hs:(24,5)-(29,32)                        1619          0    0.4    0.0    99.3   99.8
-  findSolution                          Main                      app\Main.hs:(18,5)-(20,42)                        1620          1    0.0    0.0    98.9   99.8
-   solutions                            Main                      app\Main.hs:15:5-47                               1624          0    0.0    0.0    98.9   99.8
-    day02                               Day02                     src\Day02.hs:(24,5)-(29,65)                       1625          1    0.0    0.0    98.9   99.8
-     part2                              Day02                     src\Day02.hs:(15,5)-(19,55)                       1704       7913    0.0    0.0    98.6   99.6
-      part2.res                         Day02                     src\Day02.hs:19:9-55                              1707       7913    1.1    1.1    98.6   99.6
-       part1                            Day02                     src\Day02.hs:12:5-71                              1708       7913    1.4    0.0    97.5   98.5
-        execIntCode                     IntCode                   src\IntCode.hs:(81,5)-(87,53)                     1709     276955   14.1    3.2    96.0   98.5
-         execIntCode.(...)              IntCode                   src\IntCode.hs:87:9-53                            1713     269042    1.4    0.0    14.1   20.3
-          execInstr                     IntCode                   src\IntCode.hs:(71,5)-(78,78)                     1714     269042    4.7    7.8    12.7   20.3
-           setMem                       IntCode                   src\IntCode.hs:(30,5)-(32,11)                     1730     269042    8.0   12.6     8.0   12.6
-         execIntCode.instr              IntCode                   src\IntCode.hs:86:9-33                            1710     269042    0.7    1.4    67.8   74.9
-          loadInstr                     IntCode                   src\IntCode.hs:(41,5)-(47,51)                     1711     269042    6.5   10.6    67.0   73.6
-           loadInstr.(...)              IntCode                   src\IntCode.hs:45:9-37                            1723     269042    0.7    1.4     8.3   11.6
-            padInstr                    IntCode                   src\IntCode.hs:(51,5)-(61,65)                     1724     269042    7.6   10.2     7.6   10.2
-           loadInstr.instr              IntCode                   src\IntCode.hs:44:9-48                            1716     269042    5.4    1.4    13.4   12.5
-            digits                      Data.Digits               src\Data\Digits.hs:46:1-38                        1717     269042    1.8    1.4     8.0   11.1
-             digitsRev                  Data.Digits               src\Data\Digits.hs:38:1-43                        1718     269042    0.0    0.0     6.2    9.7
-              mDigitsRev                Data.Digits               src\Data\Digits.hs:(14,1)-(22,45)                 1719     269042    1.4    0.0     6.2    9.7
-               mDigitsRev.dr            Data.Digits               src\Data\Digits.hs:(18,7)-(22,45)                 1720     538084    2.9    6.5     4.7    9.7
-                mDigitsRev.dr.(...)     Data.Digits               src\Data\Digits.hs:21:26-56                       1722     269042    1.8    3.2     1.8    3.2
-                mDigitsRev.dr.lastDigit Data.Digits               src\Data\Digits.hs:21:26-56                       1725     269042    0.0    0.0     0.0    0.0
+ main                                   Main                      app\Main.hs:(24,5)-(29,32)                        1619          0    2.1    0.0    99.3   99.8
+  findSolution                          Main                      app\Main.hs:(18,5)-(20,42)                        1620          1    0.0    0.0    97.1   99.8
+   solutions                            Main                      app\Main.hs:15:5-47                               1624          0    0.0    0.0    97.1   99.8
+    day02                               Day02                     src\Day02.hs:(24,5)-(29,65)                       1625          1    0.0    0.0    97.1   99.8
+     part2                              Day02                     src\Day02.hs:(15,5)-(19,55)                       1704       7913    0.4    0.0    96.8   99.6
+      part2.res                         Day02                     src\Day02.hs:19:9-55                              1707       7913    1.1    1.1    96.4   99.6
+       part1                            Day02                     src\Day02.hs:12:5-71                              1708       7913    0.0    0.0    95.4   98.5
+        execIntCode                     IntCode                   src\IntCode.hs:(81,5)-(87,53)                     1709     276955    9.6    3.2    95.4   98.5
+         execIntCode.(...)              IntCode                   src\IntCode.hs:87:9-53                            1713     269042    0.0    0.0    11.4   20.3
+          execInstr                     IntCode                   src\IntCode.hs:(71,5)-(78,70)                     1714     269042    3.2    7.8    11.4   20.3
+           setMem                       IntCode                   src\IntCode.hs:(30,5)-(32,11)                     1730     269042    8.2   12.6     8.2   12.6
+         execIntCode.instr              IntCode                   src\IntCode.hs:86:9-33                            1710     269042    1.8    1.4    74.3   74.9
+          loadInstr                     IntCode                   src\IntCode.hs:(41,5)-(47,51)                     1711     269042    6.8   10.6    72.5   73.6
+           loadInstr.(...)              IntCode                   src\IntCode.hs:45:9-37                            1723     269042    1.1    1.4     6.1   11.6
+            padInstr                    IntCode                   src\IntCode.hs:(51,5)-(61,65)                     1724     269042    5.0   10.2     5.0   10.2
+           loadInstr.instr              IntCode                   src\IntCode.hs:44:9-48                            1716     269042   10.7    1.4    18.9   12.5
+            digits                      Data.Digits               src\Data\Digits.hs:46:1-38                        1717     269042    0.7    1.4     8.2   11.1
+             digitsRev                  Data.Digits               src\Data\Digits.hs:38:1-43                        1718     269042    0.7    0.0     7.5    9.7
+              mDigitsRev                Data.Digits               src\Data\Digits.hs:(14,1)-(22,45)                 1719     269042    0.7    0.0     6.8    9.7
+               mDigitsRev.dr            Data.Digits               src\Data\Digits.hs:(18,7)-(22,45)                 1720     538084    3.2    6.5     6.1    9.7
+                mDigitsRev.dr.(...)     Data.Digits               src\Data\Digits.hs:21:26-56                       1722     269042    2.1    3.2     2.1    3.2
+                mDigitsRev.dr.lastDigit Data.Digits               src\Data\Digits.hs:21:26-56                       1725     269042    0.7    0.0     0.7    0.0
                 mDigitsRev.dr.rest      Data.Digits               src\Data\Digits.hs:21:26-56                       1721     269042    0.0    0.0     0.0    0.0
-           loadInstr.mems               IntCode                   src\IntCode.hs:46:9-46                            1728     269042    2.2    0.0    20.7   19.9
-            loadInts                    IntCode                   src\IntCode.hs:64:5-75                            1729     269042    4.7   19.9    18.5   19.9
-             loadInts.val               IntCode                   src\IntCode.hs:64:53-74                           1734     743822   13.8    0.0    13.8    0.0
-           loadInstr.modes              IntCode                   src\IntCode.hs:45:9-37                            1726     269042    0.0    0.0     0.0    0.0
-           loadInstr.op                 IntCode                   src\IntCode.hs:45:9-37                            1715     269042    1.4    0.0     1.4    0.0
-           loadInstr.vals               IntCode                   src\IntCode.hs:47:9-51                            1727     269042   11.2   19.0    16.7   19.0
-            loadVals                    IntCode                   src\IntCode.hs:(67,5)-(68,34)                     1733     743822    5.4    0.0     5.4    0.0
+           loadInstr.mems               IntCode                   src\IntCode.hs:46:9-46                            1728     269042    1.8    0.0    21.8   19.9
+            loadInts                    IntCode                   src\IntCode.hs:64:5-75                            1729     269042    5.0   19.9    20.0   19.9
+             loadInts.val               IntCode                   src\IntCode.hs:64:53-74                           1734     743822   15.0    0.0    15.0    0.0
+           loadInstr.modes              IntCode                   src\IntCode.hs:45:9-37                            1726     269042    0.4    0.0     0.4    0.0
+           loadInstr.op                 IntCode                   src\IntCode.hs:45:9-37                            1715     269042    0.4    0.0     0.4    0.0
+           loadInstr.vals               IntCode                   src\IntCode.hs:47:9-51                            1727     269042    9.3   19.0    18.2   19.0
+            loadVals                    IntCode                   src\IntCode.hs:(67,5)-(68,34)                     1733     743822    8.9    0.0     8.9    0.0
          execIntCode.m2                 IntCode                   src\IntCode.hs:87:9-53                            1731     269042    0.0    0.0     0.0    0.0
          execIntCode.np                 IntCode                   src\IntCode.hs:87:9-53                            1712     269042    0.0    0.0     0.0    0.0
          setPtr                         IntCode                   src\IntCode.hs:16:5-56                            1732     269042    0.0    0.0     0.0    0.0
         memory                          IntCode                   src\IntCode.hs:9:9-14                             1735       7913    0.0    0.0     0.0    0.0
-     day02.proc                         Day02                     src\Day02.hs:25:13-37                             1630          1    0.0    0.0     0.4    0.1
-      processInput                      Day02                     src\Day02.hs:9:5-44                               1632          0    0.4    0.1     0.4    0.1
+     day02.proc                         Day02                     src\Day02.hs:25:13-37                             1630          1    0.0    0.0     0.0    0.1
+      processInput                      Day02                     src\Day02.hs:9:5-44                               1632          0    0.0    0.1     0.0    0.1
        splitOn                          Data.List.Split.Internals src\Data\List\Split\Internals.hs:421:1-42         1636          0    0.0    0.0     0.0    0.0
         split                           Data.List.Split.Internals src\Data\List\Split\Internals.hs:249:1-68         1637          0    0.0    0.0     0.0    0.0
          splitInternal                  Data.List.Split.Internals src\Data\List\Split\Internals.hs:(139,1)-(148,70) 1650        141    0.0    0.0     0.0    0.0
@@ -144,21 +141,21 @@ MAIN                                    MAIN                      <built-in>    
            insertBlanks'                Data.List.Split.Internals src\Data\List\Split\Internals.hs:(195,1)-(201,49) 1661        282    0.0    0.0     0.0    0.0
      loadMemoryWithNV                   IntCode                   src\IntCode.hs:35:5-72                            1626          1    0.0    0.0     0.0    0.0
       loadMemory                        IntCode                   src\IntCode.hs:38:5-39                            1628          0    0.0    0.0     0.0    0.0
-     part1                              Day02                     src\Day02.hs:12:5-71                              1673          1    0.0    0.0     0.0    0.0
-      execIntCode                       IntCode                   src\IntCode.hs:(81,5)-(87,53)                     1674         35    0.0    0.0     0.0    0.0
+     part1                              Day02                     src\Day02.hs:12:5-71                              1673          1    0.0    0.0     0.4    0.0
+      execIntCode                       IntCode                   src\IntCode.hs:(81,5)-(87,53)                     1674         35    0.0    0.0     0.4    0.0
        execIntCode.(...)                IntCode                   src\IntCode.hs:87:9-53                            1680         34    0.0    0.0     0.0    0.0
-        execInstr                       IntCode                   src\IntCode.hs:(71,5)-(78,78)                     1681         34    0.0    0.0     0.0    0.0
+        execInstr                       IntCode                   src\IntCode.hs:(71,5)-(78,70)                     1681         34    0.0    0.0     0.0    0.0
          setMem                         IntCode                   src\IntCode.hs:(30,5)-(32,11)                     1697         34    0.0    0.0     0.0    0.0
-       execIntCode.instr                IntCode                   src\IntCode.hs:86:9-33                            1677         34    0.0    0.0     0.0    0.0
-        loadInstr                       IntCode                   src\IntCode.hs:(41,5)-(47,51)                     1678         34    0.0    0.0     0.0    0.0
+       execIntCode.instr                IntCode                   src\IntCode.hs:86:9-33                            1677         34    0.0    0.0     0.4    0.0
+        loadInstr                       IntCode                   src\IntCode.hs:(41,5)-(47,51)                     1678         34    0.0    0.0     0.4    0.0
          loadInstr.(...)                IntCode                   src\IntCode.hs:45:9-37                            1690         34    0.0    0.0     0.0    0.0
           padInstr                      IntCode                   src\IntCode.hs:(51,5)-(61,65)                     1691         34    0.0    0.0     0.0    0.0
-         loadInstr.instr                IntCode                   src\IntCode.hs:44:9-48                            1683         34    0.0    0.0     0.0    0.0
-          digits                        Data.Digits               src\Data\Digits.hs:46:1-38                        1684         34    0.0    0.0     0.0    0.0
-           digitsRev                    Data.Digits               src\Data\Digits.hs:38:1-43                        1685         34    0.0    0.0     0.0    0.0
-            mDigitsRev                  Data.Digits               src\Data\Digits.hs:(14,1)-(22,45)                 1686         34    0.0    0.0     0.0    0.0
-             mDigitsRev.dr              Data.Digits               src\Data\Digits.hs:(18,7)-(22,45)                 1687         68    0.0    0.0     0.0    0.0
-              mDigitsRev.dr.(...)       Data.Digits               src\Data\Digits.hs:21:26-56                       1689         34    0.0    0.0     0.0    0.0
+         loadInstr.instr                IntCode                   src\IntCode.hs:44:9-48                            1683         34    0.0    0.0     0.4    0.0
+          digits                        Data.Digits               src\Data\Digits.hs:46:1-38                        1684         34    0.0    0.0     0.4    0.0
+           digitsRev                    Data.Digits               src\Data\Digits.hs:38:1-43                        1685         34    0.0    0.0     0.4    0.0
+            mDigitsRev                  Data.Digits               src\Data\Digits.hs:(14,1)-(22,45)                 1686         34    0.0    0.0     0.4    0.0
+             mDigitsRev.dr              Data.Digits               src\Data\Digits.hs:(18,7)-(22,45)                 1687         68    0.0    0.0     0.4    0.0
+              mDigitsRev.dr.(...)       Data.Digits               src\Data\Digits.hs:21:26-56                       1689         34    0.4    0.0     0.4    0.0
               mDigitsRev.dr.lastDigit   Data.Digits               src\Data\Digits.hs:21:26-56                       1692         34    0.0    0.0     0.0    0.0
               mDigitsRev.dr.rest        Data.Digits               src\Data\Digits.hs:21:26-56                       1688         34    0.0    0.0     0.0    0.0
          loadInstr.mems                 IntCode                   src\IntCode.hs:46:9-46                            1695         34    0.0    0.0     0.0    0.0
@@ -173,3 +170,4 @@ MAIN                                    MAIN                      <built-in>    
        setPtr                           IntCode                   src\IntCode.hs:16:5-56                            1699         34    0.0    0.0     0.0    0.0
       memory                            IntCode                   src\IntCode.hs:9:9-14                             1702          1    0.0    0.0     0.0    0.0
      loadMemory                         IntCode                   src\IntCode.hs:38:5-39                            1703          0    0.0    0.0     0.0    0.0
+39:5-39                            1703          0    0.0    0.0     0.0    0.0
