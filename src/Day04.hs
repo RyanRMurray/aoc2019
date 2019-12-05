@@ -12,15 +12,15 @@ module Day04 where
     isAscend :: String -> Bool
     isAscend x = sort x == x
 
-    digits = ['0'..'9']
+    digs = ['0'..'9']
 
     hasDubs :: String -> Bool
-    hasDubs str = or $ map f digits
+    hasDubs str = or $ map f digs
       where
         f c = (length $ filter (==c) str) > 1
 
     onlyDubs :: String -> Bool
-    onlyDubs str = or $ map f digits
+    onlyDubs str = or $ map f digs
       where
         f c = (length $ filter (==c) str) == 2
     

@@ -23,6 +23,7 @@ dependencies:
 - split
 - containers
 - sort
+- digits
 
 library:
   source-dirs: src
