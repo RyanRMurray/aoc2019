@@ -70,12 +70,12 @@ module IntCode where
     execInstr :: IntMachine -> [Int] -> IntMachine
     execInstr machine [1,a,b,c] = setMem machine c (b+a)
     execInstr machine [2,a,b,c] = setMem machine c (b*a)
+    execInstr machine [7,a,b,c] = setMem machine c $ fromEnum $ a < b
+    execInstr machine [8,a,b,c] = setMem machine c $ fromEnum $ a == b
     execInstr machine [3,c]     = inputMachine machine c
     execInstr machine [4,c]     = outputMachine machine c
     execInstr machine [5,a,b]   = if a /= 0 then setPtr machine b else machine
     execInstr machine [6,a,b]   = if a == 0 then setPtr machine b else machine
-    execInstr machine [7,a,b,c] = setMem machine c $ fromEnum $ a < b
-    execInstr machine [8,a,b,c] = setMem machine c $ fromEnum $ a == b
 
     execIntCode :: IntMachine -> IntMachine
     execIntCode m1@(IntMachine mem _ _ ptr)
