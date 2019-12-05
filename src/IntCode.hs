@@ -13,7 +13,7 @@ module IntCode where
       }
 
     setPtr :: IntMachine -> Int -> IntMachine
-    setPtr (IntMachine m i o _) np = IntMachine m i o np
+    setPtr (IntMachine m i o _) = IntMachine m i o
 
     outputMachine :: IntMachine -> Int -> IntMachine
     outputMachine (IntMachine m i o p) no = IntMachine 
@@ -32,33 +32,34 @@ module IntCode where
       i o p
 
     loadMemoryWithNV ::  Int -> Int -> [Int] -> Memory
-    loadMemoryWithNV n v  = (M.insert 2 v) . (M.insert 1 n) . loadMemory        
+    loadMemoryWithNV n v  = M.insert 2 v . M.insert 1 n . loadMemory        
 
     loadMemory ::  [Int] -> Memory
     loadMemory = M.fromList . zip [0..]
 
     loadInstr :: Int -> Memory -> [Int]
     loadInstr ix mem =
-        (op:vals)
+        op : vals
       where
-        instr = reverse . digits 10 $ mem M.! ix
+        instr        = reverse . digits 10 $ mem M.! ix
         (op:_:modes) = padInstr instr
-        mems  = loadInts mem ix (length modes)
-        vals  = map (loadVals mem) $ zip modes mems
+        mems         = loadInts mem ix (length modes)
+        vals         = map (loadVals mem) $ zip modes mems
 
     padInstr :: [Int] -> [Int]
-    --standard 2 op, 1 addr instructions
-    padInstr (1:rest) = (1:rest) ++ replicate (3 - length rest) 0 ++ [1]
-    padInstr (2:rest) = (2:rest) ++ replicate (3 - length rest) 0 ++ [1]
-    padInstr (7:rest) = (7:rest) ++ replicate (3 - length rest) 0 ++ [1]
-    padInstr (8:rest) = (8:rest) ++ replicate (3 - length rest) 0 ++ [1]
-    --input always refers to an address
-    padInstr (3:rest) = (3:rest) ++ replicate (2 - length rest) 1
-    --output is 1 op stored in 1 addr
-    padInstr (4:rest) = (4:rest) ++ replicate (2 - length rest) 0
-    --control flow is 1 value 1 addr
-    padInstr (5:rest) = (5:rest) ++ replicate (3 - length rest) 0
-    padInstr (6:rest) = (6:rest) ++ replicate (3 - length rest) 0
+    padInstr i@(op:rest) = zipWith xor (i ++ [0,0..]) (defaultOf op) 
+
+    defaultOf :: Int -> [Int]
+    defaultOf 3 = [0,0,1]
+    defaultOf 4 = [0,0,0]
+    defaultOf 5 = [0,0,0,0]
+    defaultOf 6 = [0,0,0,0]
+    defaultOf _ = [0,0,0,0,1]
+
+    xor :: Int -> Int -> Int
+    xor 0 0 = 0
+    xor 0 1 = 1
+    xor a _ = a
 
     loadInts :: Memory  -> Int -> Int -> [Int]
     loadInts mem ix len = [val | x <- [1..len], let val = mem M.! (ix + x)]
