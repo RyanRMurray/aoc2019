@@ -9,7 +9,7 @@ module Day03 where
 
     type CoOrd = (Int,Int)
     type Wire = [(Char, Int)]
-    type WireSteps = [Char]
+    type WireSteps = String
     type WireGrid = Map CoOrd Int
     type WireSpace = Set CoOrd
     data Stepper = Stepper
@@ -37,11 +37,9 @@ module Day03 where
 
     processInput :: String -> [Wire]
     processInput = 
-        (map (map f))  .
-        (map (splitOn ",")) . 
-        (splitOn "\n")
+        map (map f . splitOn ",") . splitOn "\n"
       where
-        f = \(c:i) -> (c,read i)
+        f (c:i) = (c,read i)
 
     processSteps :: Wire -> WireSteps
     processSteps w = concat [replicate s d | (d,s) <- w]
@@ -87,6 +85,6 @@ module Day03 where
     day03 input = do
         let proc = processInput input
         putStr "Part 1: "
-        putStrLn . show $ part1 proc
+        print $ part1 proc
         putStr "Part 2: "
-        putStrLn . show $ part2 proc
+        print $ part2 proc

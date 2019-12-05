@@ -11,14 +11,13 @@ module Main where
     import Day05
 
 
-    solutions :: [(String -> IO ())]
+    solutions :: [String -> IO ()]
     solutions = [day01,day02,day03,day04,day05]
 
     findSolution :: Int -> Maybe (String -> IO ())
     findSolution i
         | i-1 < length solutions = Just (solutions !! (i-1))
         | otherwise              = Nothing
-
 
     main :: IO ()
     main = do 

@@ -78,11 +78,11 @@ module IntCode where
     execInstr machine [5,a,b]   = if a /= 0 then setPtr machine b else machine
     execInstr machine [6,a,b]   = if a == 0 then setPtr machine b else machine
 
-    execIntCode :: IntMachine -> IntMachine
-    execIntCode m1@(IntMachine mem _ _ ptr)
+    runIntMachine :: IntMachine -> IntMachine
+    runIntMachine m1@(IntMachine mem _ _ ptr)
         | mem M.! ptr == 99  = m1
-        | np          == ptr = execIntCode $ setPtr m2 (ptr + length instr)
-        | otherwise          = execIntCode m2
+        | np          == ptr = runIntMachine $ setPtr m2 (ptr + length instr)
+        | otherwise          = runIntMachine m2
       where 
         instr = loadInstr ptr mem
         m2@(IntMachine _ _ _ np) = execInstr m1 instr
