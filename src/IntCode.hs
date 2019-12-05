@@ -6,6 +6,32 @@ module IntCode where
 
     type Memory = Map Int Int
 
+    data IntMachine = IntMachine 
+      { memory    :: Memory
+      , input  :: [Int]
+      , output :: [Int]
+      , ptr    :: Int
+      }
+
+    setPtr :: IntMachine -> Int -> IntMachine
+    setPtr (IntMachine m i o _) np = IntMachine m i o np
+
+    outputMachine :: IntMachine -> Int -> IntMachine
+    outputMachine (IntMachine m i o p) no = IntMachine 
+        m i 
+        (o ++ [no])
+        p
+
+    inputMachine :: IntMachine -> Int -> IntMachine
+    inputMachine (IntMachine m (i:is) o p) loc = IntMachine 
+        (M.insert loc i m) 
+        is o p
+
+    setMem :: IntMachine -> Int -> Int -> IntMachine
+    setMem (IntMachine m i o p) loc nv = IntMachine 
+      (M.insert loc nv m)
+      i o p
+
     loadMemoryWithNV ::  Int -> Int -> [Int] -> Memory
     loadMemoryWithNV n v  = (M.insert 2 v) . (M.insert 1 n) . loadMemory        
 
@@ -13,11 +39,7 @@ module IntCode where
     loadMemory = M.fromList . zip [0..]
 
     loadInstr :: Int -> Memory -> [Int]
-    loadInstr i m = [val | x <- [0..3], let val = m M.! (i + x)]
-
-
-    loadVariedInstr :: Int -> Memory -> [Int]
-    loadVariedInstr ix mem =
+    loadInstr ix mem =
         (op:vals)
       where
         instr = reverse . digits 10 $ mem M.! ix
@@ -25,6 +47,7 @@ module IntCode where
         mems  = loadInts mem ix (length modes)
         vals  = map (loadVals mem) $ zip modes mems
 
+    padInstr :: [Int] -> [Int]
     padInstr (1:rest) = (1:rest) ++ replicate (3 - length rest) 0 ++ [1]
     padInstr (2:rest) = (2:rest) ++ replicate (3 - length rest) 0 ++ [1]
     padInstr (3:rest) = (3:rest) ++ replicate (2 - length rest) 1
@@ -42,37 +65,21 @@ module IntCode where
     loadVals _ (1,v) = v
     loadVals mem (0,i) = mem M.! i
       
-    
-    execVariedInstr :: Memory -> [Int] -> [Int] -> Int -> [Int] -> (Memory, [Int], [Int], Int)
-    execVariedInstr mem i      o p [1,a,b,c] = (M.insert c (b+a) mem, i, o, p)
-    execVariedInstr mem i      o p [2,a,b,c] = (M.insert c (b*a) mem, i, o, p)
-    execVariedInstr mem (i:ix) o p [3,c]     = (M.insert c i mem, ix, o, p)
-    execVariedInstr mem i      o p [4,c]     = (mem, i, (o ++ [c]), p)
-    execVariedInstr mem i      o p [5,a,b]   = (mem, i, o, if a /= 0 then b else p)
-    execVariedInstr mem i      o p [6,a,b]   = (mem, i, o, if a == 0 then b else p)
-    execVariedInstr mem i      o p [7,a,b,c] = (if a < b then M.insert c 1 mem else M.insert c 0 mem, i, o, p)
-    execVariedInstr mem i      o p [8,a,b,c] = (if a == b then M.insert c 1 mem else M.insert c 0 mem, i, o, p)
+    execInstr :: IntMachine -> [Int] -> IntMachine
+    execInstr machine [1,a,b,c] = setMem machine c (b+a)
+    execInstr machine [2,a,b,c] = setMem machine c (b*a)
+    execInstr machine [3,c]     = inputMachine machine c
+    execInstr machine [4,c]     = outputMachine machine c
+    execInstr machine [5,a,b]   = if a /= 0 then setPtr machine b else machine
+    execInstr machine [6,a,b]   = if a == 0 then setPtr machine b else machine
+    execInstr machine [7,a,b,c] = setMem machine c $ fromEnum $ a < b
+    execInstr machine [8,a,b,c] = setMem machine c $ fromEnum $ a == b
 
-    execVariedIntCode :: Memory -> [Int] -> [Int] -> Int -> (Memory, [Int])
-    execVariedIntCode mem i o ptr
-        | mem M.! ptr == 99 = (mem, o)
-        | np         == ptr = execVariedIntCode nm ni no (ptr + length instr)
-        | otherwise         = execVariedIntCode nm ni no np
+    execIntCode :: IntMachine -> IntMachine
+    execIntCode m1@(IntMachine mem _ _ ptr)
+        | mem M.! ptr == 99 = m1
+        | np         == ptr = execIntCode $ setPtr m2 (ptr + length instr)
+        | otherwise         = execIntCode m2
       where 
-        instr = loadVariedInstr ptr mem
-        (nm, ni, no, np) = execVariedInstr mem i o ptr instr
-
-
-    execIntInstr :: Int -> Int -> Int -> Int -> Memory -> Memory
-    execIntInstr o a b c mem = 
-        M.insert c ((f o) (mem M.! a) (mem M.! b)) mem
-      where
-        f 1 = (+)
-        f 2 = (*)
-
-    execIntCode :: Int -> Memory -> Memory
-    execIntCode ptr mem 
-        | o == 99   = mem 
-        | otherwise = execIntCode (ptr+4) $ execIntInstr o a b c mem
-      where
-        (o:a:b:c:_) = loadInstr ptr mem
+        instr = loadInstr ptr mem
+        m2@(IntMachine _ _ _ np) = execInstr m1 instr
