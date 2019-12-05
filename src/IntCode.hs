@@ -2,12 +2,11 @@ module IntCode where
     import qualified Data.Map as M
     import           Data.Map (Map)
     import           Data.Digits
-    import Debug.Trace
 
     type Memory = Map Int Int
 
     data IntMachine = IntMachine 
-      { memory    :: Memory
+      { memory :: Memory
       , input  :: [Int]
       , output :: [Int]
       , ptr    :: Int
@@ -48,15 +47,18 @@ module IntCode where
         vals  = map (loadVals mem) $ zip modes mems
 
     padInstr :: [Int] -> [Int]
+    --standard 2 op, 1 addr instructions
     padInstr (1:rest) = (1:rest) ++ replicate (3 - length rest) 0 ++ [1]
     padInstr (2:rest) = (2:rest) ++ replicate (3 - length rest) 0 ++ [1]
-    padInstr (3:rest) = (3:rest) ++ replicate (2 - length rest) 1
-    padInstr (4:rest) = (4:rest) ++ replicate (2 - length rest) 0
-    padInstr (5:rest) = (5:rest) ++ replicate (3 - length rest) 0
-    padInstr (6:rest) = (6:rest) ++ replicate (3 - length rest) 0
     padInstr (7:rest) = (7:rest) ++ replicate (3 - length rest) 0 ++ [1]
     padInstr (8:rest) = (8:rest) ++ replicate (3 - length rest) 0 ++ [1]
-
+    --input always refers to an address
+    padInstr (3:rest) = (3:rest) ++ replicate (2 - length rest) 1
+    --output is 1 op stored in 1 addr
+    padInstr (4:rest) = (4:rest) ++ replicate (2 - length rest) 0
+    --control flow is 1 value 1 addr
+    padInstr (5:rest) = (5:rest) ++ replicate (3 - length rest) 0
+    padInstr (6:rest) = (6:rest) ++ replicate (3 - length rest) 0
 
     loadInts :: Memory  -> Int -> Int -> [Int]
     loadInts mem ix len = [val | x <- [1..len], let val = mem M.! (ix + x)]
@@ -77,9 +79,9 @@ module IntCode where
 
     execIntCode :: IntMachine -> IntMachine
     execIntCode m1@(IntMachine mem _ _ ptr)
-        | mem M.! ptr == 99 = m1
-        | np         == ptr = execIntCode $ setPtr m2 (ptr + length instr)
-        | otherwise         = execIntCode m2
+        | mem M.! ptr == 99  = m1
+        | np          == ptr = execIntCode $ setPtr m2 (ptr + length instr)
+        | otherwise          = execIntCode m2
       where 
         instr = loadInstr ptr mem
         m2@(IntMachine _ _ _ np) = execInstr m1 instr

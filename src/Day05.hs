@@ -8,15 +8,15 @@ module Day05 where
     processInput :: String -> [Int]
     processInput = (map read) .  splitOn ","
 
-    diagnose :: Memory -> [Int] -> [Int]
-    diagnose mem i = output $ execIntCode (IntMachine mem i [] 0)
+    diagnose :: Memory -> Int -> [Int]
+    diagnose mem i = output $ execIntCode (IntMachine mem [i] [] 0)
 
     day05 input = do
         let proc = loadMemory $ processInput input
         putStr "Part 1: "
-        print $ diagnose proc [1]
+        print $ diagnose proc 1
         putStr "Part 2: "
-        print $ diagnose proc [5]
+        print $ diagnose proc 5
 
 
 
