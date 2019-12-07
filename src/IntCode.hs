@@ -11,7 +11,7 @@ module IntCode where
       , input  :: [Int]
       , output :: [Int]
       , ptr    :: Int
-      }
+      } deriving (Show)
 
     setPtr :: IntMachine -> Int -> IntMachine
     setPtr (IntMachine m i o _) = IntMachine m i o
@@ -108,11 +108,11 @@ module IntCode where
         m2@(IntMachine _ _ _ np) = execInstr m1 instr
 
 
-    feedBackLoop :: [IntMachine] -> IntMachine -> [Int]
-    feedBackLoop [] m = output $ runIntMachine m
+    feedBackLoop :: [IntMachine] -> IntMachine -> IntMachine
+    feedBackLoop [] m = runIntMachine m
 
     feedBackLoop (r:rs) running@(IntMachine mem ins outs pt)
-        | next == 99                   = trace (show $ ptr r) $ trace (show $ memory r) $ feedBackLoop rs r
+        | next == 99                   = feedBackLoop rs r
         | next == 4                    = feedBackLoop (rs++[dropOut stepped]) (addInput r $ output stepped)
         | next == 3 && length ins == 0 = feedBackLoop (rs++[running]) r
         | otherwise                    = feedBackLoop (r:rs) stepped
