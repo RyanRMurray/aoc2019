@@ -3,6 +3,8 @@ module IntCode where
     import           Data.Map (Map)
     import           Data.Digits
 
+--Intmachine functions and definitions
+---------------------------------------------------------------------------------------------------
     type Memory = Map Int Int
 
     data IntMachine = IntMachine 
@@ -48,6 +50,9 @@ module IntCode where
 
     loadMemory ::  [Int] -> Memory
     loadMemory = M.fromList . zip [0..]
+
+--Core machine execution functions
+---------------------------------------------------------------------------------------------------
 
     loadInstr :: Int -> Memory -> [Int]
     loadInstr ix mem =
@@ -99,6 +104,8 @@ module IntCode where
         instr = loadInstr ptr mem
         m2@(IntMachine _ _ _ np) = execInstr m1 instr
 
+--functions for running an array of intmachines that feed into eachother
+---------------------------------------------------------------------------------------------------
 
     stepIntMachine :: IntMachine -> IntMachine
     stepIntMachine m1@(IntMachine mem _ _ ptr)
@@ -110,14 +117,14 @@ module IntCode where
         m2@(IntMachine _ _ _ np) = execInstr m1 instr
 
 
-    feedBackLoop :: [IntMachine] -> IntMachine -> [Int] -> Int
-    feedBackLoop [] m outs = last outs
+    execArray :: [IntMachine] -> IntMachine -> [Int] -> Int
+    execArray [] _ outs = last outs
 
-    feedBackLoop (r:rs) running@(IntMachine mem ins outs pt) loopOuts
-        | next == 99                   = feedBackLoop rs r loopOuts
-        | next == 4                    = feedBackLoop (rs++[dropOut stepped]) (addInput r $ output stepped) (loopOuts ++ output stepped)
-        | next == 3 && length ins == 0 = feedBackLoop (rs++[running]) r loopOuts
-        | otherwise                    = feedBackLoop (r:rs) stepped loopOuts
+    execArray inactive@(next:is) running@(IntMachine mem ins _ pt) loopOuts
+        | instr == 99                   = execArray is                      next                 loopOuts
+        | instr == 4                    = execArray (is++[dropOut stepped]) (addInput next outs) (loopOuts ++ outs)
+        | instr == 3 && length ins == 0 = execArray (is++[running])         next                 loopOuts
+        | otherwise                     = execArray inactive                stepped              loopOuts
       where
-        next = mem M.! pt
-        stepped = stepIntMachine running
+        instr    = mem M.! pt
+        stepped@(IntMachine _ _ outs _) = stepIntMachine running
