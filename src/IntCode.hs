@@ -2,6 +2,7 @@ module IntCode where
     import qualified Data.Map as M
     import           Data.Map (Map)
     import           Data.Digits
+    import Debug.Trace
 
     type Memory = Map Int Int
 
@@ -25,6 +26,15 @@ module IntCode where
     inputMachine (IntMachine m (i:is) o p) loc = IntMachine 
         (M.insert loc i m) 
         is o p
+
+    addInput :: IntMachine -> [Int] -> IntMachine
+    addInput (IntMachine m i o p) is = IntMachine
+      m
+      (i++is)
+      o p
+
+    dropOut :: IntMachine -> IntMachine
+    dropOut (IntMachine m i (o:os) p) = IntMachine m i os p
 
     setMem :: IntMachine -> Int -> Int -> IntMachine
     setMem (IntMachine m i o p) loc nv = IntMachine 
@@ -86,3 +96,26 @@ module IntCode where
       where 
         instr = loadInstr ptr mem
         m2@(IntMachine _ _ _ np) = execInstr m1 instr
+
+
+    stepIntMachine :: IntMachine -> IntMachine
+    stepIntMachine m1@(IntMachine mem _ _ ptr)
+        | mem M.! ptr == 99  = m1
+        | np          == ptr = setPtr m2 (ptr + length instr)
+        | otherwise          = m2
+      where 
+        instr = loadInstr ptr mem
+        m2@(IntMachine _ _ _ np) = execInstr m1 instr
+
+
+    feedBackLoop :: [IntMachine] -> IntMachine -> [Int]
+    feedBackLoop [] m = output $ runIntMachine m
+
+    feedBackLoop (r:rs) running@(IntMachine mem ins outs pt)
+        | next == 99                   = trace (show $ ptr r) $ trace (show $ memory r) $ feedBackLoop rs r
+        | next == 4                    = feedBackLoop (rs++[dropOut stepped]) (addInput r $ output stepped)
+        | next == 3 && length ins == 0 = feedBackLoop (rs++[running]) r
+        | otherwise                    = feedBackLoop (r:rs) stepped
+      where
+        next = mem M.! pt
+        stepped = stepIntMachine running
