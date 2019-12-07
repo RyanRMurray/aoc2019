@@ -113,7 +113,7 @@ module IntCode where
 
     feedBackLoop (r:rs) running@(IntMachine mem ins outs pt)
         | next == 99                   = feedBackLoop rs r
-        | next == 4                    = feedBackLoop (rs++[dropOut stepped]) (addInput r $ output stepped)
+        | next == 4                    = feedBackLoop (rs++[stepped]) (addInput r $ output stepped)
         | next == 3 && length ins == 0 = feedBackLoop (rs++[running]) r
         | otherwise                    = feedBackLoop (r:rs) stepped
       where
