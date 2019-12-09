@@ -40,5 +40,5 @@ module Day08 where
         putStr "Part 1: "
         print $ part1 proc
         putStrLn "Part 2: "
-        printImg $ part2 $ proc
+        printImg . part2 $ proc
 

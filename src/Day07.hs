@@ -12,7 +12,7 @@ module Day07 where
     execAmplifiers mem modes = 
         execArray ms (addInput m [0]) []  
       where
-        (m:ms) = map (\x -> IntMachine mem [x] [] 0) modes
+        (m:ms) = map (\x -> IntMachine mem [x] [] 0 0) modes
 
     maxOutput :: Memory -> [Int] -> Int
     maxOutput mem modes = maximum . map (execAmplifiers mem) $ permutations modes
