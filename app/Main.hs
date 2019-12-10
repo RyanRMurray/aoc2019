@@ -13,10 +13,11 @@ module Main where
     import Day07
     import Day08
     import Day09
+    import Day10
 
 
     solutions :: [String -> IO ()]
-    solutions = [day01,day02,day03,day04,day05,day06,day07,day08,day09]
+    solutions = [day01,day02,day03,day04,day05,day06,day07,day08,day09,day10]
 
     findSolution :: Int -> Maybe (String -> IO ())
     findSolution i
