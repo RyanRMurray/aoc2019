@@ -24,7 +24,7 @@ module IntCode where
     outputMachine :: IntMachine -> Int -> IntMachine
     outputMachine (IntMachine m i o p r) no = IntMachine 
         m i 
-        (o ++ [m M.! no])
+        (o ++ [no])
         p r
 
     inputMachine :: IntMachine -> Int -> IntMachine
@@ -67,7 +67,7 @@ module IntCode where
       where 
         (op:_:modes) = makeInstr . reverse . digits 10 $ mem @! ix
         operands     = loadInts mem ix $ length modes
-        isStore      = elem op [1,2,3,4,7,8]
+        isStore      = elem op [1,2,3,7,8]
         values       = zipWith (loadOperands mem rel) modes (init operands)
         -- final operand refers to an address if the function stores any data (this includes outputting!)
         final        = if isStore then loadStoreLoc mem rel (last modes) (last operands)
@@ -91,7 +91,7 @@ module IntCode where
     
     defaults :: Int -> [Int]
     defaults 3 = [3,0,1]
-    defaults 4 = [4,0,1]
+    defaults 4 = [4,0,0]
     defaults 5 = [5,0,0,0]
     defaults 6 = [6,0,0,0]
     defaults 7 = [7,0,0,0,1]
