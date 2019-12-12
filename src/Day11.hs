@@ -2,7 +2,6 @@ module Day11 where
     import Data.List.Split
     import Data.Map (Map)
     import qualified Data.Map as M
-    import Debug.Trace
 
     import IntCode
 
