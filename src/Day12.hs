@@ -2,9 +2,11 @@ module Day12 where
     import Data.List.Split
     import Data.List
     import Data.Maybe
-    import Debug.Trace
 
     type Pos = (Int,Int,Int)
+
+    (*+) :: Pos -> Pos -> Pos
+    (*+) (a,b,c) (x,y,z) = (a+x,b+y,c+z)
 
     data Moon = Moon
         { pos :: Pos
@@ -18,14 +20,11 @@ module Day12 where
         ints = map ((map read) . (splitOn ",") . f) $ lines str
         f    = filter (\c -> notElem c "<>=xyz")
 
-    addPos :: Pos -> Pos -> Pos
-    addPos (a,b,c) (d,e,f) = (a+d,b+e,c+f)
-
     getMagnitude :: Pos -> Int
     getMagnitude (x,y,z) = sum [abs x, abs y, abs z]
 
     getInfluence :: Moon -> Moon -> Pos
-    getInfluence (Moon (ex,ey,ez) _) (Moon (tx,ty,tz) _) = 
+    getInfluence (Moon (tx,ty,tz) _) (Moon (ex,ey,ez) _)  = 
         (f ex tx, f ey ty, f ez tz)
       where
         f e t
@@ -36,8 +35,8 @@ module Day12 where
     stepMoon :: [Moon] -> Moon -> Moon
     stepMoon effectors target@(Moon pos vel) = Moon newPos newVel
       where
-        newVel = foldl (\v m -> addPos v $ getInfluence m target) vel effectors
-        newPos = addPos pos newVel
+        newVel = foldl (*+) vel $ map (getInfluence target) effectors
+        newPos = pos *+ newVel
     
     stepAll :: [Moon] -> [Moon]
     stepAll moons = map f moons
@@ -56,7 +55,7 @@ module Day12 where
     --find period of each axis, adding 1 to account for indexing
     periodInAxis :: [Moon] -> ([Moon] -> [Int]) -> Int
     periodInAxis moons axis = (+) 1 $
-        fromJust $ findIndex isRepeat $ tail $ iterate stepAll moons
+        fromJust . findIndex isRepeat . tail $ iterate stepAll moons
       where
         initial    = axis moons
         isRepeat x = initial == axis x
