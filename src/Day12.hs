@@ -35,7 +35,7 @@ module Day12 where
     stepMoon :: [Moon] -> Moon -> Moon
     stepMoon effectors target@(Moon pos vel) = Moon newPos newVel
       where
-        newVel = foldl (*+) vel $ map (getInfluence target) effectors
+        newVel = foldl' (*+) vel $ map (getInfluence target) effectors
         newPos = pos *+ newVel
     
     stepAll :: [Moon] -> [Moon]
@@ -61,16 +61,16 @@ module Day12 where
         isRepeat x = initial == axis x
 
     axisX :: [Moon] -> [Int]
-    axisX = foldl (\l (Moon (x,_,_) (vx,_,_)) -> x : vx : l) []
+    axisX = foldl' (\l (Moon (x,_,_) (vx,_,_)) -> x : vx : l) []
 
     axisY :: [Moon] -> [Int]
-    axisY = foldl (\l (Moon (_,x,_) (_,vx,_)) -> x : vx : l) []
+    axisY = foldl' (\l (Moon (_,x,_) (_,vx,_)) -> x : vx : l) []
 
     axisZ :: [Moon] -> [Int]
-    axisZ = foldl (\l (Moon (_,_,x) (_,_,vx)) -> x : vx : l) []
+    axisZ = foldl' (\l (Moon (_,_,x) (_,_,vx)) -> x : vx : l) []
     
     part2 :: [Moon] -> Int
-    part2 moons = foldl lcm 1 $ map (periodInAxis moons) [axisX,axisY,axisZ]
+    part2 moons = foldl' lcm 1 $ map (periodInAxis moons) [axisX,axisY,axisZ]
 
 
     day12 input = do
