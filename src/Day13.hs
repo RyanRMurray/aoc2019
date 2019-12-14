@@ -23,7 +23,7 @@ module Day13 where
 
 
     breakoutBot :: IntMachine -> Int -> Pos -> Pos -> Int
-    breakoutBot game@(IntMachine mem ins out ptr rel) score ppos bpos
+    breakoutBot game@(IntMachine mem _ out ptr rel) score ppos bpos
         | instr == 99 = newScore
         | instr ==  3 = breakoutBot (stepIntMachine inputtedGame) newScore nppos nbpos
         | otherwise   = breakoutBot (stepIntMachine game)         score    ppos  bpos
