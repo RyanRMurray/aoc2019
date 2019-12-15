@@ -3,11 +3,7 @@ module Day14 where
     import Data.List
     import qualified Data.Map as M
     import Data.Map (Map)
-    import qualified Data.Tree as T
-    import Data.Tree (Tree)
     import Data.Maybe
-    import Debug.Trace
-    import Control.Monad.State
 
     type Formulas = Map String [ChemAm]
 
@@ -44,35 +40,76 @@ module Day14 where
     makeIngrs :: [String] -> ChemAm
     makeIngrs (am:ty) = (read am, head ty)
 
+
+    ingredientsFor :: Formulas -> ChemAm -> [ChemAm]
+    ingredientsFor fs (batches, chem) = 
+      filter (\(_,c) -> c /= "ORE")
+      $ map (\(n,c) -> (n * batches,c)) 
+      $ fs M.! chem
+
+    ingredientsForLot :: Formulas -> Amounts -> [ChemAm] -> [ChemAm]
+    ingredientsForLot fs as chems =
+        map rev $ M.toList sumIngredients
+      where
+        batches = map (\(n,c) -> (n */ (as M.! c) ,c)) chems
+        ingredients = concat $ map (ingredientsFor fs) batches
+        sumIngredients = foldl' (\m (n,c) -> M.insertWith (+) c n m) M.empty ingredients
+
+    recipeTree :: Formulas -> Amounts -> ChemAm -> [[ChemAm]]
+    recipeTree fs as chem = takeWhile (/=[]) $ iterate (ingredientsForLot fs as) [chem]
+
+    makeIngredient :: Formulas -> Amounts -> Stock -> ChemAm -> Stock
+    makeIngredient fs as st (amount, chem) 
+        | first == "ORE" = foldl' (\s (n,c) -> M.insertWith (+) c n s) st [(generated,chem), (oam * batches, "ORE")]
+        | otherwise      = M.insertWith (+) chem generated depleted
+      where
+        ingredients = fs M.! chem
+        (oam,first) = head $ ingredients
+        batches = amount */ (as M.! chem)
+        required = map (\(n,c) -> (n * batches,c)) ingredients
+        depleted = foldl' (\s (n,c) -> M.insertWith (subtract) c n s) st required
+        generated = amount *^ (as M.! chem)
+    
+    makeLot :: Formulas -> Amounts -> Stock -> [ChemAm] -> Stock
+    makeLot fs as st chems = foldl' generate st chems
+      where
+        missing (n,c) = (n - (M.findWithDefault 0 c st),c)
+        generate s ch
+          | fst (missing ch) > 0 = makeIngredient fs as s (missing ch)
+          | otherwise            = s
+
+
+    make :: Formulas -> Amounts -> ChemAm -> Stock
+    make fs as target =
+        head . snd $ span (\s -> missing s /= []) $ iterate (\st -> fillIn st $ missing st) generated
+      where
+        prereqs       = reverse $ recipeTree fs as target
+        generated     = foldl' (makeLot fs as) M.empty prereqs
+        missing s     = map (\(n,c) -> (-n,c))$ map rev $ filter (\(c,n) -> n < 0)  $ M.toList s
+        fillIn s miss = foldl' (makeIngredient fs as) s miss
+
     rev (a,b) = (b,a)
     
-    getReqs :: Formulas -> Amounts -> (Stock,Stock) -> [ChemAm] -> (Stock,Stock)
-    getReqs _ _ (free,used) [] = (free,used)
+    part1 :: Formulas -> Amounts -> Int
+    part1 fs as = fromJust $ M.lookup "ORE" $ make fs as (1,"FUEL")
 
-    getReqs fs ams (free,used) ((lots,chem):todo) =
-        trace (show ingrs) getReqs fs ams (addedFree, finalUsed) todo
+
+    optiSearch :: Formulas -> Amounts -> Int -> Int -> Int
+    optiSearch fs as low high 
+        | diff > -100000 && diff < 100000 = mid
+        | diff > 0                      = optiSearch fs as low mid
+        | otherwise                     = optiSearch fs as mid high
       where
-        ingrs = filter (\(n,c) -> c /= "ORE") $ map (\(n,c) -> (n * lots, c)) $ fs M.! chem
-        missing = filter (\(n,c) -> n > 0) $ map (\(n,c) -> (n - M.findWithDefault 0 c free,c)) ingrs
-        depletedFree = foldl' (\m (n,c) -> M.insertWith (+) c (-n) m) free ingrs
-        cLots (n,c) = (n */ (ams M.! c), c)
-        (addedFree, newUsed) = getReqs fs ams (depletedFree, used) $ map cLots missing
-        finalUsed = foldl' (\m (n,c) -> M.insertWith (+) c n m) newUsed ingrs
-        generated = lots * (ams M.! chem)
+        mid = div (high + low) 2
+        res = fromJust $ M.lookup "ORE" $ make fs as (mid,"FUEL")
+        diff = 1000000000000 - res
 
-
-    filterBase :: Formulas -> [ChemAm] -> [ChemAm] 
-    filterBase fs t = 
-      map rev
-      $ M.toList
-      $ foldl' (\m (n,c) -> M.insertWith (+) c n m) M.empty
-      $ filter (\(_,c) -> (snd $ head $ fs M.! c) == "ORE") t
-
-    sumOre :: Formulas -> Amounts -> [ChemAm] -> Int
-    sumOre fs as basics = sum
-        $ [times * ores | (am,c) <- basics, let times = am */ (as M.! c), let ores = fst $ head $ fs M.! c]
+    part2 :: Formulas -> Amounts -> Int
+    part2 fs as = optiSearch fs as 1 1000000 
 
     day14 input = do
         let (fs,as) = processInput input
         putStr "Part 1: "
-        --print $ part1 fs as
+        print $ part1 fs as
+        putStr "Part 2: "
+        print $ part2 fs as
