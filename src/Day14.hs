@@ -93,23 +93,7 @@ module Day14 where
     part1 :: Formulas -> Amounts -> Int
     part1 fs as = fromJust $ M.lookup "ORE" $ make fs as (1,"FUEL")
 
-
-    optiSearch :: Formulas -> Amounts -> Int -> Int -> Int
-    optiSearch fs as low high 
-        | diff > -100000 && diff < 100000 = mid
-        | diff > 0                      = optiSearch fs as low mid
-        | otherwise                     = optiSearch fs as mid high
-      where
-        mid = div (high + low) 2
-        res = fromJust $ M.lookup "ORE" $ make fs as (mid,"FUEL")
-        diff = 1000000000000 - res
-
-    part2 :: Formulas -> Amounts -> Int
-    part2 fs as = optiSearch fs as 1 1000000 
-
     day14 input = do
         let (fs,as) = processInput input
         putStr "Part 1: "
         print $ part1 fs as
-        putStr "Part 2: "
-        print $ part2 fs as
