@@ -25,6 +25,7 @@ dependencies:
 - sort
 - digits
 - mtl
+- grid
 
 library:
   source-dirs: src

@@ -136,7 +136,6 @@ module Day17 where
             | n > 9 = [intToDigit 1, intToDigit (mod n 10)]
             | otherwise = [intToDigit n]
 
-
     part2 :: Memory -> Grid -> Int
     part2 mem g =
         last $ output $ runIntMachine machine
@@ -148,7 +147,6 @@ module Day17 where
         encodedFs = foldl' (\l f -> l ++ (init $ encodeFunction f) ++ "\n") [] functions
         inputs    = map ord $ main ++ encodedFs ++ "n\n"
         machine   = IntMachine (M.insert 0 2 mem) inputs [] 0 0
-
 
 
     drawMap :: Grid -> [String]

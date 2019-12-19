@@ -21,13 +21,16 @@ module Main where
     import Day15
     import Day16
     import Day17
+    import Day18
+    import Day19
+
 
 
     solutions :: [String -> IO ()]
     solutions = [day01,day02,day03,day04,day05
                 ,day06,day07,day08,day09,day10
                 ,day11,day12,day13,day14,day15
-                ,day16,day17]
+                ,day16,day17,day18,day19]
 
     findSolution :: Int -> Maybe (String -> IO ())
     findSolution i
@@ -41,7 +44,3 @@ module Main where
         case findSolution $ read day of
             Nothing -> putStrLn "No solution for that day."
             Just sol-> sol input
-
-
-
-
