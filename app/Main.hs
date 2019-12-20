@@ -23,6 +23,8 @@ module Main where
     import Day17
     import Day18
     import Day19
+    import Day20
+
 
 
 
@@ -30,7 +32,7 @@ module Main where
     solutions = [day01,day02,day03,day04,day05
                 ,day06,day07,day08,day09,day10
                 ,day11,day12,day13,day14,day15
-                ,day16,day17,day18,day19]
+                ,day16,day17,day18,day19,day20]
 
     findSolution :: Int -> Maybe (String -> IO ())
     findSolution i

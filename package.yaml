@@ -26,6 +26,7 @@ dependencies:
 - digits
 - mtl
 - grid
+- heap
 
 library:
   source-dirs: src
